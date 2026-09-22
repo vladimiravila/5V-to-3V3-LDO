@@ -19,13 +19,13 @@ The output voltage is set using the regulator's feedback network:
 * R2 = 30.1 kΩ
 * CFF = 15 pF
 
-Using the TPS79301-EP feedback equation:
+The TPS79301-EP feedback equation is:
 
 $$
 V_{OUT}=V_{REF}\left(1+\frac{R_1}{R_2}\right)
 $$
 
-with \(V_{REF}\approx1.2246\text{ V}\):
+Using \(V_{REF}\approx1.2246\text{ V}\):
 
 $$
 V_{OUT}=1.2246\left(1+\frac{51}{30.1}\right)\approx3.30\text{ V}
