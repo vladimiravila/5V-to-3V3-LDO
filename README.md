@@ -1,69 +1,68 @@
 # 5 V to 3.3 V LDO Power Supply
 
-An Altium Designer implementation of a 5 V to 3.3 V linear regulator power supply using the Texas Instruments TPS79301-EP adjustable low-dropout (LDO) regulator.
+Altium Designer implementation of a 5 V to 3.3 V linear regulator supply using the TI TPS79301-EP adjustable LDO.
 
 ## Overview
 
-| Parameter | Specification |
-| :--- | :--- |
-| **Input Voltage ($V_{IN}$)** | 5.0 V |
-| **Output Voltage ($V_{OUT}$)** | 3.3 V |
-| **Max Expected Load ($I_{OUT}$)** | 100 mA |
-| **Regulator IC** | TI TPS79301-EP |
-| **PCB Stackup** | 2-layer design with bottom-layer GND plane |
-| **Connectors** | 2-pin through-hole headers |
+* **Input:** 5 V
+* **Output:** 3.3 V
+* **Maximum expected load:** 100 mA
+* **Regulator:** TI TPS79301-EP
+* **PCB:** 2-layer design with bottom-layer GND plane
+* **Connectors:** 2-pin through-hole headers
 
 ## Schematic Design
 
-The output voltage is set via the regulator's feedback network:
+The output voltage is set using the regulator's feedback network:
 
-* **$R_1$:** $51\text{ k}\Omega$
-* **$R_2$:** $30.1\text{ k}\Omega$
-* **$C_{FF}$:** $15\text{ pF}$ (Feed-forward capacitor)
+* R1 = 51 kΩ
+* R2 = 30.1 kΩ
+* C4 = 15 pF feed-forward capacitor between OUT and FB
 
-### Output Equation
+The TPS79301-EP feedback equation is:
 
-The TPS79301-EP feedback voltage equation is:
+**VOUT = VREF × (1 + R1/R2)**
 
-$$V_{OUT} = V_{REF} \times \left(1 + \frac{R_1}{R_2}\right)$$
+Using VREF ≈ 1.2246 V:
 
-Given $V_{REF} \approx 1.2246\text{ V}$:
+**VOUT = 1.2246 × (1 + 51/30.1) ≈ 3.30 V**
 
-$$V_{OUT} = 1.2246\text{ V} \times \left(1 + \frac{51\text{ k}\Omega}{30.1\text{ k}\Omega}\right) \approx 3.30\text{ V}$$
+The remaining capacitors are:
 
-### Decoupling & Bypass Capacitors
-
-* **$C_1$:** $1\text{ }\mu\text{F}$ Input capacitor
-* **$C_2$:** $2.2\text{ }\mu\text{F}$ Output capacitor
-* **$C_3$:** $10\text{ nF}$ Noise BYPASS capacitor
+* C1 = 1 µF input capacitor
+* C2 = 2.2 µF output capacitor
+* C3 = 10 nF BYPASS capacitor
 
 ## Power Dissipation
 
-At the maximum load of $100\text{ mA}$, approximate power dissipation ($P_D$) is calculated as:
+At the maximum expected load of 100 mA, the approximate regulator power dissipation is:
 
-$$P_D = (V_{IN} - V_{OUT}) \times I_{OUT}$$
+**P = (VIN − VOUT) × IOUT**
 
-$$P_D = (5\text{ V} - 3.3\text{ V}) \times 0.1\text{ A} = 0.17\text{ W}$$
+**P = (5 − 3.3) × 0.1 = 0.17 W**
 
 ## PCB Design
 
-Component layout prioritizes signal integrity and low noise around the regulator's critical pins:
+The PCB layout was designed with component placement based on the regulator's input, output, bypass, and feedback connections.
 
-* Input and output capacitors placed as close as possible to IC pins.
-* Minimized feedback loop traces to reduce noise pickup.
-* Continuous bottom-layer Ground plane.
-* Through-hole headers selected for secure physical connections.
-* Standardized component selection for easy hand assembly and manufacturing.
+Key layout considerations included:
+
+* Input and output capacitors placed close to the regulator
+* Short feedback connections
+* C4 placed between the OUT and FB nodes
+* Dedicated bottom-layer GND plane
+* Through-hole input and output connectors
+* Components selected with manufacturability and hand-assembly considerations in mind
 
 ## Verification
 
-The completed design successfully passed Altium Designer's Design Rule Check (DRC):
+The completed PCB passed Altium Designer's Design Rule Check with:
 
-* **0 Warnings / 0 Rule Violations**
+**0 warnings and 0 rule violations**
 
-Manufacturing outputs (Gerber and N.C. Drill files) have been generated.
+Gerber and drill files were also generated for manufacturing.
 
-> **Note on Simulation:** An encrypted PSpice model from the manufacturer was evaluated; however, complete SPICE transient/AC simulations were not conducted. Consequently, no simulated efficiency or ripple metrics are claimed.
+A manufacturer-provided encrypted PSpice model was investigated for simulation, but regulator SPICE simulation was not completed. Therefore, no simulated regulator performance is claimed.
 
 ## Repository Structure
 
@@ -76,4 +75,6 @@ Manufacturing outputs (Gerber and N.C. Drill files) have been generated.
 ├── Manufacturing/
 │   └── Gerbers/
 └── Documentation/
-    └── Schematic and PCB documentation
+    ├── 5V_to_3V3_LDO_Design.png
+    └── 5V_to_3V3_LDO_PCB.png
+```
